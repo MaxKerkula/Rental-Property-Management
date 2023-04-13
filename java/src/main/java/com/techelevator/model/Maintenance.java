@@ -1,19 +1,20 @@
 package com.techelevator.model;
+
 import java.util.Objects;
 
 public class Maintenance {
-    private int maintenanceRequestId;
+    private int id;
     private String description;
     private int statusId;
     private int propertyId;
     private int maintenanceWorkerId;
 
-    public int getMaintenanceRequestId() {
-        return this.maintenanceRequestId;
+    public int getId() {
+        return id;
     }
 
-    public void setMaintenanceRequestId(int maintenanceRequestId) {
-        this.maintenanceRequestId = maintenanceRequestId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -53,25 +54,22 @@ public class Maintenance {
         if (this == o) return true;
         if (!(o instanceof Maintenance)) return false;
         Maintenance that = (Maintenance) o;
-        return getMaintenanceRequestId() == that.getMaintenanceRequestId() && getStatusId() == that.getStatusId() && getPropertyId() == that.getPropertyId() && getMaintenanceWorkerId() == that.getMaintenanceWorkerId() && getDescription().equals(that.getDescription());
+        return getId() == that.getId() && getStatusId() == that.getStatusId() && getPropertyId() == that.getPropertyId() && getMaintenanceWorkerId() == that.getMaintenanceWorkerId() && getDescription().equals(that.getDescription());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMaintenanceRequestId(), getDescription(), getStatusId(), getPropertyId(), getMaintenanceWorkerId());
+        return Objects.hash(getId(), getDescription(), getStatusId(), getPropertyId(), getMaintenanceWorkerId());
     }
 
     @Override
     public String toString() {
         return "Maintenance{" +
-                "maintenanceRequestId=" + maintenanceRequestId +
+                "id=" + id +
                 ", description='" + description + '\'' +
                 ", statusId=" + statusId +
                 ", propertyId=" + propertyId +
                 ", maintenanceWorkerId=" + maintenanceWorkerId +
                 '}';
-    }
-
-    public void setId(int maintenanceRequestId) {
     }
 }

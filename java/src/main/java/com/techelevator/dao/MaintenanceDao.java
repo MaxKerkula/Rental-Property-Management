@@ -1,23 +1,21 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Maintenance;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface MaintenanceDao {
 
     List<Maintenance> getAllRequests();
 
-    Maintenance getRequestById(int requestId);
+    Maintenance getRequestById(int id);
 
-    Maintenance createRequest(Maintenance request);
+    int createRequest(Maintenance newRequest, Principal principal);
 
-    boolean assignRequest(int requestId, int assignedTo);
+    boolean assignRequest(int requestId, int assignedTo, Principal principal);
 
-    boolean updateRequestStatus(int requestId, int statusId);
+    boolean updateRequestStatus(int requestId, int statusId, Principal principal);
 
-    void deleteRequest(int id);
-
-
+    void deleteRequest(int id, Principal principal);
 }

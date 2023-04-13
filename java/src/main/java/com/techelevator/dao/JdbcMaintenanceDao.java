@@ -5,6 +5,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+import javax.sql.DataSource;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,68 +15,77 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
 
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcMaintenanceDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public JdbcMaintenanceDao(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     @Override
     public List<Maintenance> getAllRequests() {
         List<Maintenance> requests = new ArrayList<>();
-        String sql = "SELECT * FROM maintenance";
-
+        String sql = "SELECT * FROM maintenance " +
+                "JOIN maintenance_status ON maintenance_status.status_id = maintenance.status_id";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
             Maintenance request = mapRowToMaintenance(results);
             requests.add(request);
         }
-
         return requests;
     }
 
     @Override
-    public Maintenance getRequestById(int requestId) {
-        String sql = "SELECT * FROM maintenance WHERE maintenance_request_id = ?";
-        SqlRowSet result = jdbcTemplate.queryForRowSet(sql, requestId);
-        if (result.next()) {
-            return mapRowToMaintenance(result);
-        } else {
-            return null;
+    public Maintenance getRequestById(int id) {
+        Maintenance request = null;
+        String sql = "SELECT * FROM maintenance " +
+                "JOIN maintenance_status ON maintenance_status.status_id = maintenance.status_id " +
+                "WHERE maintenance_request_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        if (results.next()) {
+            request = mapRowToMaintenance(results);
         }
-    }
-
-    @Override
-    public Maintenance createRequest(Maintenance request) {
-        String sql = "INSERT INTO maintenance (description, status_id, property_id, maintenance_worker_id) VALUES (?, ?, ?, ?) RETURNING maintenance_request_id";
-        int requestId = jdbcTemplate.queryForObject(sql, Integer.class, request.getDescription(), request.getStatusId(), request.getPropertyId(), request.getMaintenanceWorkerId());
-        request.setId(requestId);
         return request;
     }
 
     @Override
-    public boolean assignRequest(int requestId, int assignedTo) {
-        String sql = "UPDATE maintenance SET maintenance_worker_id = ? WHERE maintenance_request_id = ?";
-        return jdbcTemplate.update(sql, assignedTo, requestId) == 1;
+    public int createRequest(Maintenance newRequest, Principal principal) {
+        String sql = "INSERT INTO maintenance (description, status_id, property_id, maintenance_worker_id) " +
+                "VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, newRequest.getDescription(), newRequest.getStatusId(),
+                newRequest.getPropertyId(), newRequest.getMaintenanceWorkerId());
+        return newRequest.getId();
     }
 
     @Override
-    public boolean updateRequestStatus(int requestId, int statusId) {
-        String sql = "UPDATE maintenance SET status_id = ? WHERE maintenance_request_id = ?";
-        return jdbcTemplate.update(sql, statusId, requestId) == 1;
+    public boolean assignRequest(int requestId, int assignedTo, Principal principal) {
+        String sql = "UPDATE maintenance " +
+                "SET maintenance_worker_id = ? " +
+                "WHERE maintenance_request_id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, assignedTo, requestId);
+        return rowsAffected == 1;
     }
 
     @Override
-    public void deleteRequest(int id) {
+    public boolean updateRequestStatus(int requestId, int statusId, Principal principal) {
+        String sql = "UPDATE maintenance " +
+                "SET status_id = ? " +
+                "WHERE maintenance_request_id = ?";
+        int rowsAffected = jdbcTemplate.update(sql, statusId, requestId);
+        return rowsAffected == 1;
+    }
+
+    @Override
+    public void deleteRequest(int id, Principal principal) {
         String sql = "DELETE FROM maintenance WHERE maintenance_request_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    private Maintenance mapRowToMaintenance(SqlRowSet row) {
-        Maintenance request = new Maintenance();
-        request.setId(row.getInt("maintenance_request_id"));
-        request.setDescription(row.getString("description"));
-        request.setStatusId(row.getInt("status_id"));
-        request.setPropertyId(row.getInt("property_id"));
-        request.setMaintenanceWorkerId(row.getInt("maintenance_worker_id"));
-        return request;
+    private Maintenance mapRowToMaintenance(SqlRowSet rs) {
+        Maintenance maintenance = new Maintenance();
+        maintenance.setId(rs.getInt("maintenance_request_id"));
+        maintenance.setDescription(rs.getString("description"));
+        maintenance.setStatusId(rs.getInt("status_id"));
+        maintenance.setPropertyId(rs.getInt("property_id"));
+        maintenance.setMaintenanceWorkerId(rs.getInt("maintenance_worker_id"));
+        maintenance.setDescription(rs.getString("status_description"));
+        return maintenance;
     }
 }
