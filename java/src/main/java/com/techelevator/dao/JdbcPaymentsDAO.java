@@ -1,4 +1,4 @@
 package com.techelevator.dao;
 
-public class JdbcPaymentsDAO {
+public class JdbcPaymentsDao {
 }
