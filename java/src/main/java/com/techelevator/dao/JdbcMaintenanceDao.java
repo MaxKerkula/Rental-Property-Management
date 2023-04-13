@@ -22,8 +22,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
     @Override
     public List<Maintenance> getAllRequests() {
         List<Maintenance> requests = new ArrayList<>();
-        String sql = "SELECT * FROM maintenance " +
-                "JOIN maintenance_status ON maintenance_status.status_id = maintenance.status_id";
+        String sql = "SELECT * FROM maintenance";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
             Maintenance request = mapRowToMaintenance(results);
@@ -35,8 +34,9 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
     @Override
     public Maintenance getRequestById(int id) {
         Maintenance request = null;
-        String sql = "SELECT * FROM maintenance " +
-                "JOIN maintenance_status ON maintenance_status.status_id = maintenance.status_id " +
+        String sql = "SELECT maintenance.*, maintenance_status.status_description " +
+                "FROM maintenance " +
+                "JOIN maintenance_status ON maintenance.status_id = maintenance_status.status_id " +
                 "WHERE maintenance_request_id = ?";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         if (results.next()) {
@@ -85,7 +85,6 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
         maintenance.setStatusId(rs.getInt("status_id"));
         maintenance.setPropertyId(rs.getInt("property_id"));
         maintenance.setMaintenanceWorkerId(rs.getInt("maintenance_worker_id"));
-        maintenance.setDescription(rs.getString("status_description"));
         return maintenance;
     }
 }
