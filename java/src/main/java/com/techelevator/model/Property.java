@@ -10,7 +10,6 @@ public class Property {
     private boolean isAvailable;
     private int landlordId;
 
-    public Property() { }
 
     public Property(int id, int rentalPrice, String address, boolean isAvailable, int landlordId) {
         this.id = id;
@@ -18,6 +17,10 @@ public class Property {
         this.address = address;
         this.isAvailable = isAvailable;
         this.landlordId = landlordId;
+    }
+
+    public Property() {
+
     }
 
     public int getId() {
