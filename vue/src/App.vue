@@ -2,14 +2,15 @@
   
   <div class="container">
       <header>
-          Header Content
+          <img src="img/Elevateheights.png" alt="logo" />
       </header>
 
       <nav>
           <div class="content">
               Navigation
               <div><router-link :to="{name: 'home'}">Home</router-link></div>
-              <div><router-link :to="{name: 'about'}">About</router-link></div>
+              <div><router-link :to="{name: 'properties'}">Properties</router-link></div>
+              <div><router-link :to="{name: 'resident'}">Resident Portal</router-link></div>
               <div><router-link :to="{name: 'contact'}">Contact Us</router-link></div>
         </div>
       </nav>
@@ -94,29 +95,29 @@
 
     header {
     grid-area: header;
-    background-color: #360145;
+    background-color: #460F59;
     }
 
     nav {
         grid-area: nav;
         margin-left: 0.5rem;
-        background-color: #f2ead2;
+        background-color: #d9d9d9;
     }
 
     main {
         grid-area: content;
-        background-color: #f9f5f0;
+        background-color: #ffff;
     }
 
     aside {
         grid-area: side;
         margin-right: 0.5rem;
-        background-color: #f2ead2;
+        background-color: #d9d9d9;
     }
 
     footer {
         grid-area: footer;
-        background-color: #D9D9D9;
+        background-color: #460F59;
     }
 
     header, footer {
@@ -134,5 +135,9 @@
     div.content {
         text-align: center;
         padding-top: 20px;
+    }
+    img {
+        height: 125px;
+        width: 150px;
     }
 </style>
