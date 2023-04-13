@@ -1,8 +1,8 @@
 package com.techelevator.service;
 import com.techelevator.dao.MaintenanceDao;
 import com.techelevator.dao.UserDao;
+import com.techelevator.dao.UserDetailsDao;
 import com.techelevator.model.Maintenance;
-import com.techelevator.model.User;
 import com.techelevator.model.UserDetails;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,11 +14,11 @@ import java.util.List;
 public class MaintenanceServiceImp implements MaintenanceService {
 
     private MaintenanceDao maintenanceDao;
-    private UserDao userDao;
+    private UserDetailsDao userDetailsDao;
 
-    public MaintenanceServiceImp(MaintenanceDao maintenanceDao, UserDao userDao) {
+    public MaintenanceServiceImp(MaintenanceDao maintenanceDao, UserDetailsDao userDetailsDao) {
         this.maintenanceDao = maintenanceDao;
-        this.userDao = userDao;
+        this.userDetailsDao = userDetailsDao;
     }
 
     @Override
@@ -33,13 +33,9 @@ public class MaintenanceServiceImp implements MaintenanceService {
 
     @Override
     public Maintenance createRequest(Maintenance request, String username) {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found.");
-        }
-        UserDetails userDetails = userDetailDao.getUserDetailsByUserId(user.getUserId());
+        UserDetails userDetails = userDetailsDao.getUserDetailsByUsername(username);
         if (userDetails == null) {
-            throw new EntityNotFoundException("User details not found.");
+            throw new UsernameNotFoundException("User not found.");
         }
         request.setPropertyId(userDetails.getPropertyId());
         return maintenanceDao.createRequest(request);
@@ -47,15 +43,15 @@ public class MaintenanceServiceImp implements MaintenanceService {
 
     @Override
     public boolean assignRequest(int requestId, int assignedTo, String username) {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
+        UserDetails userDetails = userDetailsDao.getUserDetailsByUsername(username);
+        if (userDetails == null) {
             throw new UsernameNotFoundException("User not found.");
         }
         Maintenance request = maintenanceDao.getRequestById(requestId);
         if (request == null) {
             throw new EntityNotFoundException("Maintenance request not found.");
         }
-        if (request.getMaintenanceWorkerId() != user.getUserId()) {
+        if (request.getMaintenanceWorkerId() != userDetails.getUserId()) {
             throw new AccessDeniedException("Access denied.");
         }
         return maintenanceDao.assignRequest(requestId, assignedTo);
@@ -63,15 +59,15 @@ public class MaintenanceServiceImp implements MaintenanceService {
 
     @Override
     public boolean updateRequestStatus(int requestId, int statusId, String username) {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
+        UserDetails userDetails = userDetailsDao.getUserDetailsByUsername(username);
+        if (userDetails == null) {
             throw new UsernameNotFoundException("User not found.");
         }
         Maintenance request = maintenanceDao.getRequestById(requestId);
         if (request == null) {
             throw new EntityNotFoundException("Maintenance request not found.");
         }
-        if (request.getMaintenanceWorkerId() != user.getUserId() && !user.getRole().equals("landlord")) {
+        if (request.getMaintenanceWorkerId() != userDetails.getUserId() && !userDetails.getRole().equals("landlord")) {
             throw new AccessDeniedException("Access denied.");
         }
         return maintenanceDao.updateRequestStatus(requestId, statusId);
@@ -79,15 +75,15 @@ public class MaintenanceServiceImp implements MaintenanceService {
 
     @Override
     public void deleteRequest(int requestId, String username) {
-        User user = userDao.findByUsername(username);
-        if (user == null) {
+        UserDetails userDetails = userDetailsDao.getUserDetailsByUsername(username);
+        if (userDetails == null) {
             throw new UsernameNotFoundException("User not found.");
         }
         Maintenance request = maintenanceDao.getRequestById(requestId);
         if (request == null) {
             throw new EntityNotFoundException("Maintenance request not found.");
         }
-        if (request.getMaintenanceWorkerId() != user.getUserId() && !user.getRole().equals("landlord")) {
+        if (request.getMaintenanceWorkerId() != userDetails.getUserId() && !userDetails.getRole().equals("landlord")) {
             throw new AccessDeniedException("Access denied.");
         }
         maintenanceDao.deleteRequest(requestId);
