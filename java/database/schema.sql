@@ -6,7 +6,9 @@ DROP TABLE IF EXISTS maintenance;
 DROP TABLE IF EXISTS payments;
 DROP TABLE IF EXISTS user_details;
 DROP TABLE IF EXISTS maintenance_status;
-
+DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS account_balances
+DROP TABLE IF EXISTS property_photos
 CREATE TABLE users (
 user_id SERIAL,
 username varchar(50) NOT NULL UNIQUE,
@@ -18,16 +20,17 @@ CONSTRAINT PK_user PRIMARY KEY (user_id)
 CREATE TABLE properties (
 property_id SERIAL,
 rental_price INTEGER,
-address VARCHAR,
+address VARCHAR(255),
 is_available BOOLEAN,
 landlord_id INTEGER,
+due_date  DATE,
 CONSTRAINT pk_property_id PRIMARY KEY (property_id),
 CONSTRAINT fk_landlord_id FOREIGN KEY (landlord_id) REFERENCES users(user_id)
 );
 
 CREATE TABLE maintenance (
 maintenance_request_id SERIAL,
-description VARCHAR,
+description VARCHAR(255),
 status_id INTEGER,
 property_id INTEGER,
 maintenance_worker_id INTEGER,
@@ -62,7 +65,7 @@ CREATE TABLE user_details (
 
 CREATE TABLE maintenance_status (
 status_id SERIAL,
-status_description VARCHAR,
+status_description VARCHAR(255),
 CONSTRAINT pk_status_id PRIMARY KEY (status_id)
 );
 
@@ -97,6 +100,5 @@ CREATE TABLE account_balances (
   CONSTRAINT pk_balance_id PRIMARY KEY (balance_id),
   CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
-
 
 COMMIT TRANSACTION;

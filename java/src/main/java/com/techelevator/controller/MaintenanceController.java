@@ -2,10 +2,12 @@ package com.techelevator.controller;
 
 import com.techelevator.model.Maintenance;
 import com.techelevator.service.MaintenanceService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,27 +28,27 @@ public class MaintenanceController {
     }
 
     @GetMapping("/{id}")
-    public Maintenance getRequestById(@PathVariable int id){
-        return maintenanceService.getRequestById(id);
+    public Maintenance getRequestById(@PathVariable int id, Principal principal){
+        return maintenanceService.getRequestById(id, principal);
     }
 
     @PostMapping
-    public Maintenance createRequest(@Valid @RequestBody Maintenance newRequest, @RequestParam String username){
-        return maintenanceService.createRequest(newRequest, username);
+    public int createRequest(@Valid @RequestBody Maintenance newRequest, Principal principal){
+        return maintenanceService.createRequest(newRequest, principal);
     }
 
     @PutMapping("/assign/{requestId}")
-    public boolean assignRequest(@PathVariable int requestId, @RequestParam int assignedTo, @RequestParam String username) {
-        return maintenanceService.assignRequest(requestId, assignedTo, username);
+    public boolean assignRequest(@PathVariable int requestId, @RequestParam int assignedTo, Principal principal) {
+        return maintenanceService.assignRequest(requestId, assignedTo, principal);
     }
 
     @PutMapping("/status/{requestId}")
-    public boolean updateRequestStatus(@PathVariable int requestId, @RequestParam int statusId, @RequestParam String username) {
-        return maintenanceService.updateRequestStatus(requestId, statusId, username);
+    public boolean updateRequestStatus(@PathVariable int requestId, @RequestParam int statusId, Principal principal) {
+        return maintenanceService.updateRequestStatus(requestId, statusId, principal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRequest(@PathVariable int id, @RequestParam String username) {
-        maintenanceService.deleteRequest(id, username);
+    public void deleteRequest(@PathVariable int id, Principal principal) {
+        maintenanceService.deleteRequest(id, principal);
     }
 }
