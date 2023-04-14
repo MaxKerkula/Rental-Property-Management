@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.techelevator.model.Users;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import com.techelevator.model.User;
 
 @Component
 public class JdbcUserDao implements UserDao {
@@ -37,7 +36,7 @@ public class JdbcUserDao implements UserDao {
     }
 
 	@Override
-	public User getUserById(int userId) {
+	public Users getUserById(int userId) {
 		String sql = "SELECT * FROM users WHERE user_id = ?";
 		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
 		if (results.next()) {
@@ -48,13 +47,13 @@ public class JdbcUserDao implements UserDao {
 	}
 
     @Override
-    public List<User> findAll() {
-        List<User> users = new ArrayList<>();
+    public List<Users> findAll() {
+        List<Users> users = new ArrayList<>();
         String sql = "select * from users";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
-            User user = mapRowToUser(results);
+            Users user = mapRowToUser(results);
             users.add(user);
         }
 
@@ -62,12 +61,12 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public Users findByUsername(String username) {
         if (username == null) throw new IllegalArgumentException("Username cannot be null");
 
-        for (User user : this.findAll()) {
-            if (user.getUsername().equalsIgnoreCase(username)) {
-                return user;
+        for (Users users : this.findAll()) {
+            if (users.getUsername().equalsIgnoreCase(username)) {
+                return users;
             }
         }
         throw new UsernameNotFoundException("User " + username + " was not found.");
@@ -89,13 +88,13 @@ public class JdbcUserDao implements UserDao {
         return userRole;
     }
 
-    private User mapRowToUser(SqlRowSet rs) {
-        User user = new User();
-        user.setId(rs.getInt("user_id"));
-        user.setUsername(rs.getString("username"));
-        user.setPassword(rs.getString("password_hash"));
-        user.setAuthorities(Objects.requireNonNull(rs.getString("role")));
-        user.setActivated(true);
-        return user;
+    private Users mapRowToUser(SqlRowSet rs) {
+        Users users = new Users();
+        users.setId(rs.getInt("user_id"));
+        users.setUsername(rs.getString("username"));
+        users.setPassword(rs.getString("password_hash"));
+        users.setAuthorities(Objects.requireNonNull(rs.getString("role")));
+        users.setActivated(true);
+        return users;
     }
 }

@@ -38,12 +38,12 @@ public class MaintenanceController {
     }
 
     @PutMapping("/assign/{requestId}")
-    public boolean assignRequest(@PathVariable int requestId, @RequestParam int assignedTo, Principal principal) {
+    public boolean assignRequest(@PathVariable int requestId, @RequestBody Integer assignedTo, Principal principal) {
         return maintenanceService.assignRequest(requestId, assignedTo, principal);
     }
 
     @PutMapping("/status/{requestId}")
-    public boolean updateRequestStatus(@PathVariable int requestId, @RequestParam int statusId, Principal principal) {
+    public boolean updateRequestStatus(@PathVariable int requestId, @RequestBody Integer statusId, Principal principal) {
         return maintenanceService.updateRequestStatus(requestId, statusId, principal);
     }
 

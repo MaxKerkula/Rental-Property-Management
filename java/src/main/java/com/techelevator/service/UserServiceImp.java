@@ -1,11 +1,11 @@
 package com.techelevator.service;
 
-import com.techelevator.dao.PaymentsDao;
+import com.techelevator.dao.PaymentDao;
 
 public class UserServiceImp {
-    private PaymentsDao paymentsDAO;
+    private PaymentDao paymentDAO;
 
-    public UserServiceImp(PaymentsDao paymentsDAO) {
-        this.paymentsDAO = paymentsDAO;
+    public UserServiceImp(PaymentDao paymentDAO) {
+        this.paymentDAO = paymentDAO;
     }
 }

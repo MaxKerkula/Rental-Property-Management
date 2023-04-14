@@ -7,6 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping
-public class PropertyController {
-
+public class PaymentController {
 }

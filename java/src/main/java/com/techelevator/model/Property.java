@@ -1,5 +1,6 @@
 package com.techelevator.model;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Property {
@@ -9,19 +10,19 @@ public class Property {
     private String address;
     private boolean isAvailable;
     private int landlordId;
-
-
-    public Property(int id, int rentalPrice, String address, boolean isAvailable, int landlordId) {
+    private LocalDateTime dueDate;
+    public Property() {
+    }
+    public Property(int id, int rentalPrice, String address, boolean isAvailable, int landlordId, LocalDateTime dueDate) {
         this.id = id;
         this.rentalPrice = rentalPrice;
         this.address = address;
         this.isAvailable = isAvailable;
         this.landlordId = landlordId;
+        this.dueDate = dueDate;
     }
 
-    public Property() {
 
-    }
 
     public int getId() {
         return id;
@@ -63,27 +64,11 @@ public class Property {
         this.landlordId = landlordId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Property)) return false;
-        Property property = (Property) o;
-        return getId() == property.getId() && getRentalPrice() == property.getRentalPrice() && isAvailable() == property.isAvailable() && getLandlordId() == property.getLandlordId() && getAddress().equals(property.getAddress());
+    public LocalDateTime getDueDate() {
+        return dueDate;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getRentalPrice(), getAddress(), isAvailable(), getLandlordId());
-    }
-
-    @Override
-    public String toString() {
-        return "Property{" +
-                "id=" + id +
-                ", rentalPrice=" + rentalPrice +
-                ", address='" + address + '\'' +
-                ", isAvailable=" + isAvailable +
-                ", landlordId=" + landlordId +
-                '}';
+    public void setDueDate(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
     }
 }

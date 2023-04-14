@@ -51,7 +51,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
                 "VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, newRequest.getDescription(), newRequest.getStatusId(),
                 newRequest.getPropertyId(), newRequest.getMaintenanceWorkerId());
-        return newRequest.getId();
+        return newRequest.getMaintenanceId();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class JdbcMaintenanceDao implements MaintenanceDao {
 
     private Maintenance mapRowToMaintenance(SqlRowSet rs) {
         Maintenance maintenance = new Maintenance();
-        maintenance.setId(rs.getInt("maintenance_request_id"));
+        maintenance.setMaintenanceId(rs.getInt("maintenance_request_id"));
         maintenance.setDescription(rs.getString("description"));
         maintenance.setStatusId(rs.getInt("status_id"));
         maintenance.setPropertyId(rs.getInt("property_id"));

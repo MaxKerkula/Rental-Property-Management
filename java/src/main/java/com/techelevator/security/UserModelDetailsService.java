@@ -2,7 +2,7 @@ package com.techelevator.security;
 
 
 import com.techelevator.dao.UserDao;
-import com.techelevator.model.User;
+import com.techelevator.model.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,15 +35,15 @@ public class UserModelDetailsService implements UserDetailsService {
         return createSpringSecurityUser(lowercaseLogin, userDao.findByUsername(lowercaseLogin));
     }
 
-    private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
-        if (!user.isActivated()) {
+    private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, Users users) {
+        if (!users.isActivated()) {
             throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
         }
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+        List<GrantedAuthority> grantedAuthorities = users.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(users.getUsername(),
+                users.getPassword(),
                 grantedAuthorities);
     }
 }

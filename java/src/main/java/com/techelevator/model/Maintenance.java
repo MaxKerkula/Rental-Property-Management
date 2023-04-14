@@ -3,18 +3,29 @@ package com.techelevator.model;
 import java.util.Objects;
 
 public class Maintenance {
-    private int id;
+    private int maintenanceId;
     private String description;
     private int statusId;
     private int propertyId;
     private int maintenanceWorkerId;
 
-    public int getId() {
-        return id;
+    public Maintenance() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Maintenance(int maintenanceId, String description, int statusId, int propertyId, int maintenanceWorkerId) {
+        this.maintenanceId = maintenanceId;
+        this.description = description;
+        this.statusId = statusId;
+        this.propertyId = propertyId;
+        this.maintenanceWorkerId = maintenanceWorkerId;
+    }
+
+    public int getMaintenanceId() {
+        return maintenanceId;
+    }
+
+    public void setMaintenanceId(int maintenanceId) {
+        this.maintenanceId = maintenanceId;
     }
 
     public String getDescription() {
@@ -47,29 +58,5 @@ public class Maintenance {
 
     public void setMaintenanceWorkerId(int maintenanceWorkerId) {
         this.maintenanceWorkerId = maintenanceWorkerId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Maintenance)) return false;
-        Maintenance that = (Maintenance) o;
-        return getId() == that.getId() && getStatusId() == that.getStatusId() && getPropertyId() == that.getPropertyId() && getMaintenanceWorkerId() == that.getMaintenanceWorkerId() && getDescription().equals(that.getDescription());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getDescription(), getStatusId(), getPropertyId(), getMaintenanceWorkerId());
-    }
-
-    @Override
-    public String toString() {
-        return "Maintenance{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", statusId=" + statusId +
-                ", propertyId=" + propertyId +
-                ", maintenanceWorkerId=" + maintenanceWorkerId +
-                '}';
     }
 }
