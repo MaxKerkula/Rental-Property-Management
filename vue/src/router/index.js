@@ -30,6 +30,10 @@ const router = new Router({
       }
     },
     {
+      path: '/resident-portal'
+
+    },
+    {
       path: "/login",
       name: "login",
       component: Login,
