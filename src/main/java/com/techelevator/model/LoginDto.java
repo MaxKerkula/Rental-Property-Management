@@ -1,4 +1,5 @@
 package com.techelevator.model;
+
 /*
     The acronym DTO is being used for "data transfer object". It means that this type of class is specifically
     created to transfer data between the client and the server. For example, LoginDto represents the data a
@@ -7,30 +8,30 @@ package com.techelevator.model;
  */
 public class LoginDto {
 
-   private String username;
-   private String password;
+    private String username;
+    private String password;
 
-   public String getUsername() {
-      return username;
-   }
+    public String getUsername() {
+        return username;
+    }
 
-   public void setUsername(String username) {
-      this.username = username;
-   }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-   public String getPassword() {
-      return password;
-   }
+    public String getPassword() {
+        return password;
+    }
 
-   public void setPassword(String password) {
-      this.password = password;
-   }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-   @Override
-   public String toString() {
-      return "LoginDTO{" +
-              "username='" + username + '\'' +
-              ", password='" + password + '\'' +
-              '}';
-   }
+    @Override
+    public String toString() {
+        return "LoginDTO{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

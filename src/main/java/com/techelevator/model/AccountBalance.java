@@ -5,11 +5,17 @@ public class AccountBalance {
     private int balanceAmount;
     private int balance_id;
 
+    public AccountBalance() {
+
+    }
+
     public AccountBalance(int userId, int balanceAmount, int balance_id) {
         this.userId = userId;
         this.balanceAmount = balanceAmount;
         this.balance_id = balance_id;
     }
+
+
 
     public int getUserId() {
         return userId;

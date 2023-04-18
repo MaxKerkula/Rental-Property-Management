@@ -20,6 +20,10 @@ public class Messages {
         this.sentAt = sentAt;
     }
 
+    public Messages() {
+
+    }
+
     public int getMessageId() {
         return messageId;
     }

@@ -1,7 +1,6 @@
 package com.techelevator.model;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class Property {
 
@@ -10,6 +9,7 @@ public class Property {
     private String address;
     private boolean isAvailable;
     private int landlordId;
+    // TODO below should be changed to local date
     private LocalDateTime dueDate;
     public Property() {
     }

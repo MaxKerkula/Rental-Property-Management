@@ -10,6 +10,9 @@ public class UserDetails {
     private String phone;
     private Boolean hasPets;
 
+    public UserDetails() {
+    }
+
     public UserDetails(int tenantId, int userId, int propertyId, String firstName, String lastName, String email, String phone, Boolean hasPets) {
         this.tenantId = tenantId;
         this.userId = userId;

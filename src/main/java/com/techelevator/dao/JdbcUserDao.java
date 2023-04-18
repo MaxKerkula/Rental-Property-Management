@@ -1,9 +1,6 @@
 package com.techelevator.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import com.techelevator.model.Authority;
 import com.techelevator.model.Users;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +8,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.GrantedAuthority;
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Component
 public class JdbcUserDao implements UserDao {
@@ -29,22 +32,31 @@ public class JdbcUserDao implements UserDao {
         try {
             userId = jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
         } catch (EmptyResultDataAccessException e) {
-            throw new UsernameNotFoundException("User " + username + " was not found.");
+            throw new UsernameNotFoundException("Users " + username + " was not found.");
         }
 
         return userId;
     }
 
-	@Override
-	public Users getUserById(int userId) {
-		String sql = "SELECT * FROM users WHERE user_id = ?";
-		SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
-		if (results.next()) {
-			return mapRowToUser(results);
-		} else {
-			return null;
-		}
-	}
+    @Override
+    public boolean create(String username, String password, String role) {
+        String insertUserSql = "insert into users (username,password_hash,role) values (?,?,?)";
+        String password_hash = new BCryptPasswordEncoder().encode(password);
+        String ssRole = role.toUpperCase().startsWith("ROLE_") ? role.toUpperCase() : "ROLE_" + role.toUpperCase();
+
+        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole) == 1;
+    }
+
+    @Override
+    public Users getUserById(int userId) {
+        String sql = "SELECT * FROM users WHERE user_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+        if (results.next()) {
+            return mapRowToUser(results);
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public List<Users> findAll() {
@@ -69,16 +81,7 @@ public class JdbcUserDao implements UserDao {
                 return users;
             }
         }
-        throw new UsernameNotFoundException("User " + username + " was not found.");
-    }
-
-    @Override
-    public boolean create(String username, String password, String role) {
-        String insertUserSql = "insert into users (username,password_hash,role) values (?,?,?)";
-        String password_hash = new BCryptPasswordEncoder().encode(password);
-        String ssRole = role.toUpperCase().startsWith("ROLE_") ? role.toUpperCase() : "ROLE_" + role.toUpperCase();
-
-        return jdbcTemplate.update(insertUserSql, username, password_hash, ssRole) == 1;
+        throw new UsernameNotFoundException("Users " + username + " was not found.");
     }
 
     @Override
@@ -86,6 +89,21 @@ public class JdbcUserDao implements UserDao {
         String sql = "SELECT role FROM users WHERE user_id = ?";
         String userRole = jdbcTemplate.queryForObject(sql, String.class, ID);
         return userRole;
+    }
+
+    @Override
+    public boolean updateUser(int id, Users user) {
+        String sql = "UPDATE users SET username = ?, password_hash = ?, role = ? WHERE user_id = ?";
+        String passwordHash = new BCryptPasswordEncoder().encode(user.getPassword());
+        String authorities = String.join(",", user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList()));
+        return jdbcTemplate.update(sql, user.getUsername(), passwordHash, authorities, id) == 1;
+    }
+
+
+    @Override
+    public void deleteUser(int id) {
+        String sql = "DELETE FROM users WHERE user_id = ?";
+        jdbcTemplate.update(sql, id);
     }
 
     private Users mapRowToUser(SqlRowSet rs) {
