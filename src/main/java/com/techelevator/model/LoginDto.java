@@ -6,11 +6,16 @@ package com.techelevator.model;
     client must pass to the server for a login endpoint, and LoginResponseDto represents the object that's returned
     from the server to the client from a login endpoint.
  */
+
+import javax.validation.constraints.NotBlank;
+
 public class LoginDto {
 
+    @NotBlank(message = "Username is required.")
     private String username;
-    private String password;
 
+    @NotBlank(message = "Password is required.")
+    private String password;
     public String getUsername() {
         return username;
     }

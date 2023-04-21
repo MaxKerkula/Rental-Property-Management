@@ -1,6 +1,5 @@
 package com.techelevator.dao;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.techelevator.model.Property;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public interface PropertyDao {
 
     Property createProperty(Property property);
 
-    boolean updateProperty(Property property);
+    boolean updateProperty(int propertyId, Property property);
 
     void deleteProperty(int propertyId);
 

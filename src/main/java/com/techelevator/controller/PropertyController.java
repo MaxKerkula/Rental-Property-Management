@@ -4,6 +4,8 @@ package com.techelevator.controller;
 import com.techelevator.model.Property;
 import com.techelevator.model.PropertyPhoto;
 import com.techelevator.service.PropertyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,66 +19,67 @@ import java.util.List;
 
 public class PropertyController {
 
-    private PropertyService propertyService;
+    private final PropertyService propertyService;
 
     public PropertyController(PropertyService propertyService) {
         this.propertyService = propertyService;
     }
 
-    //TODO Need to remove authentication from this method
     @GetMapping("")
-    public List<Property> getAllProperties() {
-        return propertyService.getAllProperties();
+    public ResponseEntity<List<Property>> getAllProperties() {
+        List<Property> properties = propertyService.getAllProperties();
+        return new ResponseEntity<>(properties, HttpStatus.OK);
     }
 
-
-    @PostMapping ("/new-property")
-    public Property createProperty(@RequestBody Property property, Principal principal) {
-
-        return propertyService.createProperty(property, principal);
+    @PostMapping("/new-property")
+    public ResponseEntity<Property> createProperty(@RequestBody Property property, Principal principal) {
+        Property newProperty = propertyService.createProperty(property, principal);
+        return new ResponseEntity<>(newProperty, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}/delete-property")
-    public void deleteProperty(@PathVariable int id, Principal principal) {
+    @DeleteMapping("/{id}/delete-property")
+    public ResponseEntity<Void> deleteProperty(@PathVariable int id, Principal principal) {
         propertyService.deleteProperty(id, principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    public Property getPropertyById(@PathVariable int id) {
-        return propertyService.getPropertyById(id);
+    public ResponseEntity<Property> getPropertyById(@PathVariable int id) {
+        Property property = propertyService.getPropertyById(id);
+        return new ResponseEntity<>(property, HttpStatus.OK);
     }
 
-
-    @PutMapping("/{id}/update-property")
-    public boolean updateProperty(@RequestBody Property property, Principal principal) {
-
-        return propertyService.updateProperty(property, principal);
+    @PutMapping("/{propertyId}/update-property")
+    public ResponseEntity<Boolean> updateProperty(@PathVariable int propertyId, @RequestBody Property property) {
+        boolean updated = propertyService.updateProperty(propertyId, property);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @PutMapping("/{id}/update-property-photo")
-    public boolean updatePropertyPhoto(@PathVariable Property property, @RequestBody  PropertyPhoto propertyPhoto, Principal principal) {
-        return propertyService.updatePropertyPhoto(property, propertyPhoto, principal);
+    public ResponseEntity<Boolean> updatePropertyPhoto(@PathVariable Property property, @RequestBody PropertyPhoto propertyPhoto, Principal principal) {
+        boolean isUpdated = propertyService.updatePropertyPhoto(property, propertyPhoto, principal);
+        return new ResponseEntity<>(isUpdated, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/delete-property-photo")
-    public void deletePropertyPhoto(@PathVariable int id,Principal principal) {
+    @DeleteMapping("/{id}/delete-property-photo")
+    public ResponseEntity<Void> deletePropertyPhoto(@PathVariable int id, Principal principal) {
         propertyService.deletePropertyPhoto(id, principal);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping( "/new-property-photo")
-    public PropertyPhoto addPropertyPhoto(@RequestBody PropertyPhoto propertyPhoto, Principal principal ) {
-
-        return propertyService.addPropertyPhoto(propertyPhoto, principal);
+    @PostMapping("/new-property-photo")
+    public ResponseEntity<PropertyPhoto> addPropertyPhoto(@RequestBody PropertyPhoto propertyPhoto, Principal principal) {
+        PropertyPhoto newPropertyPhoto = propertyService.addPropertyPhoto(propertyPhoto, principal);
+        return new ResponseEntity<>(newPropertyPhoto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/photo")
-    public PropertyPhoto getPhotoByPropertyId(@PathVariable int id) {
-        return propertyService.getPhotoByPropertyId(id);
+    public ResponseEntity<PropertyPhoto> getPhotoByPropertyId(@PathVariable int id) {
+        PropertyPhoto propertyPhoto = propertyService.getPhotoByPropertyId(id);
+        return new ResponseEntity<>(propertyPhoto, HttpStatus.OK);
     }
 
 }
-
-
 
 
 //      Required Methods for MVP and Stretch, Complete Business Logic in Service:

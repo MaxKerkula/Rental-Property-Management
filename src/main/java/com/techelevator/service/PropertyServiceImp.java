@@ -1,121 +1,134 @@
 package com.techelevator.service;
 
-import com.techelevator.dao.PropertyPhotoDao;
 import com.techelevator.dao.PropertyDao;
+import com.techelevator.dao.PropertyPhotoDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Property;
 import com.techelevator.model.PropertyPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.security.Principal;
 import java.util.List;
 
 @Service
-public class PropertyServiceImp implements PropertyService{
-    private PropertyDao propertyDao;
-    private UserDao userDao;
+public class PropertyServiceImp implements PropertyService {
+    private final Logger LOGGER = LoggerFactory.getLogger(MessageServiceImp.class);
+    private final PropertyDao propertyDao;
+    private final UserDao userDao;
     private PropertyPhotoDao propertyPhotoDao;
 
     @Autowired
-    public PropertyServiceImp(PropertyDao propertyDao, UserDao userDao) {
+    public PropertyServiceImp(PropertyDao propertyDao, UserDao userDao, PropertyPhotoDao propertyPhotoDao) {
         this.propertyDao = propertyDao;
         this.userDao = userDao;
+        this.propertyPhotoDao = propertyPhotoDao;
     }
 
     @Override
-    public List<Property> getAllProperties(){
-        return propertyDao.findAll();
+    public List<Property> getAllProperties() {
+        try {
+            return propertyDao.findAll();
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while retrieving all properties", e);
+            throw new IllegalStateException("Could not retrieve properties.");
+        }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public Property createProperty(Property property, Principal principal) {
         int loggedInUserId = userDao.findIdByUsername(principal.getName());
         String loggedInUserRole = userDao.getUserRoleByID(loggedInUserId);
 
-//        if (loggedInUserRole.equals("ROLE_ADMIN")){
+        try {
             return propertyDao.createProperty(property);
-//        } else {
-//            System.out.println("You need admin permissions to add a property");
-//        }
-//
-//        return null;
-
+        } catch (Exception e) {
+            LOGGER.error("An error occurred when trying to create a new property", e);
+            throw new IllegalStateException("Could not create property.");
+        }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override
     public void deleteProperty(int id, Principal principal) {
         int loggedInUserId = userDao.findIdByUsername(principal.getName());
         String loggedInUserRole = userDao.getUserRoleByID(loggedInUserId);
 
-        if (loggedInUserRole.equals("ROLE_ADMIN")){
+        try {
             propertyDao.deleteProperty(id);
-        } else {
-            System.out.println("You need admin permissions to delete a property");
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while deleting property with ID: {}", id, e);
+            throw new IllegalArgumentException("Could not delete property.");
         }
-
     }
 
     @Override
     public Property getPropertyById(int id) {
-        return propertyDao.getPropertyById(id);
-    }
-
-    @Override
-    public boolean updateProperty(Property property, Principal principal) {
-
-        int loggedInUserId = userDao.findIdByUsername(principal.getName());
-        String loggedInUserRole = userDao.getUserRoleByID(loggedInUserId);
-
-        if (loggedInUserRole.equals("ROLE_ADMIN")){
-            return propertyDao.updateProperty(property);
-        } else {
-            System.out.println("You need admin permissions to update a property");
+        try {
+            return propertyDao.getPropertyById(id);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while retrieving property by ID: {}", id, e);
+            throw new IllegalStateException("Could not retrieve property by ID.");
         }
-        return true;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_LANDLORD')")
     @Override
-    public boolean updatePropertyPhoto(PropertyPhoto propertyPhoto, Principal principal) {
+    public boolean updateProperty(int propertyId, Property property) {
+        try {
+            return propertyDao.updateProperty(propertyId, property);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while updating property with ID: {}", propertyId, e);
+            throw new IllegalArgumentException("Could not update property.");
+        }
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_LANDLORD')")
+    @Override
+    public boolean updatePropertyPhoto(Property property, PropertyPhoto propertyPhoto, Principal principal) {
+        try {
             return propertyPhotoDao.updatePropertyPhoto(propertyPhoto);
-
-    }
-    @Override
-        public boolean updatePropertyPhoto(Property property, PropertyPhoto propertyPhoto, Principal principal) {
-            return false;
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while updating property photo", e);
+            throw new IllegalArgumentException("Could not update property photo.");
         }
+    }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_LANDLORD')")
     @Override
     public void deletePropertyPhoto(int id, Principal principal) {
-        int loggedInUserId = userDao.findIdByUsername(principal.getName());
-        String loggedInUserRole = userDao.getUserRoleByID(loggedInUserId);
-
-        if (loggedInUserRole.equals("ROLE_ADMIN")){
+        try {
             propertyPhotoDao.deletePropertyPhoto(id);
-        } else {
-            System.out.println("You need admin permissions to delete a property photo");
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while deleting property photo with ID: {}", id, e);
+            throw new IllegalArgumentException("Could not delete property photo.");
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_LANDLORD')")
     public PropertyPhoto addPropertyPhoto(PropertyPhoto propertyPhoto, Principal principal) {
-        int loggedInUserId = userDao.findIdByUsername(principal.getName());
-        String loggedInUserRole = userDao.getUserRoleByID(loggedInUserId);
-
-        if (loggedInUserRole.equals("ROLE_ADMIN")){
+        try {
+            propertyPhotoDao.addPropertyPhoto(propertyPhoto);
             return propertyPhoto;
-        } else {
-            System.out.println("You need admin permissions to add a property");
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while adding property photo", e);
+            throw new IllegalStateException("Could not add property photo.");
         }
-
-        return null;
     }
 
     @Override
     public PropertyPhoto getPhotoByPropertyId(int id) {
-        return null;
+        try {
+            return propertyPhotoDao.getPropertyPhoto(id);
+        } catch (DataAccessException e) {
+            LOGGER.error("Error occurred while retrieving property photo by property ID: {}", id, e);
+            throw new IllegalStateException("Could not retrieve property photo by property ID.");
+        }
     }
 
     @Override

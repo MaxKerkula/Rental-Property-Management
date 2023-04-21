@@ -1,16 +1,26 @@
 package com.techelevator.model;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 public class MaintenanceRequest {
     private int maintenanceRequestId;
+
+    @NotBlank(message = "Description is required.")
     private String description;
-    private int statusId;
-    private int propertyId;
-    private int maintenanceWorkerId;
+
+    @NotNull(message = "Status ID is required.")
+    private Integer statusId;
+
+    @NotNull(message = "Property ID is required.")
+    private Integer propertyId;
+
+    @NotNull(message = "Maintenance worker ID is required.")
+    private Integer maintenanceWorkerId;
 
     public MaintenanceRequest() {
     }
 
-    public MaintenanceRequest(int maintenanceRequestId, String description, int statusId, int propertyId, int maintenanceRequestWorkerId) {
+    public MaintenanceRequest(int maintenanceRequestId, String description, int statusId, int propertyId, int maintenanceWorkerId) {
         this.maintenanceRequestId = maintenanceRequestId;
         this.description = description;
         this.statusId = statusId;

@@ -2,6 +2,7 @@ package com.techelevator.model;
 
 public class AccountBalance {
     private int userId;
+
     private int balanceAmount;
     private int balance_id;
 
@@ -14,7 +15,6 @@ public class AccountBalance {
         this.balanceAmount = balanceAmount;
         this.balance_id = balance_id;
     }
-
 
 
     public int getUserId() {

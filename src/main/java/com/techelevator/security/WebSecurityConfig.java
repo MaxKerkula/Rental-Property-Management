@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configure paths and requests that should be ignored by Spring Security
+     *
      * @param web
      */
     public void configure(WebSecurity web) {
@@ -49,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configure com.techelevator.auctions.security settings
+     *
      * @param httpSecurity
      * @throws Exception
      */

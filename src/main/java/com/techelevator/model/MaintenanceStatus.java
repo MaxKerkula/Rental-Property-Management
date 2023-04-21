@@ -1,11 +1,13 @@
 package com.techelevator.model;
 
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
 
 public class MaintenanceStatus {
     private int statusId;
-    private String statusDescription;
 
+    @NotBlank(message = "Status description is required.")
+    private String statusDescription;
     public MaintenanceStatus(int statusId, String statusDescription) {
         this.statusId = statusId;
         this.statusDescription = statusDescription;

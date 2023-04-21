@@ -1,9 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.MaintenanceRequest;
-import org.springframework.stereotype.Component;
 
-import java.security.Principal;
 import java.util.List;
 
 public interface MaintenanceRequestDao {
@@ -12,7 +10,7 @@ public interface MaintenanceRequestDao {
 
     List<MaintenanceRequest> getAllRequestsById(int userId);
 
-    public boolean updateMaintenanceRequestStatus(int requestId, int statusId);
+    boolean updateMaintenanceRequestStatus(int requestId, int statusId);
 
     MaintenanceRequest getRequestById(int id);
 

@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.AccountBalance;
 import com.techelevator.model.Payment;
+import com.techelevator.model.Property;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface PaymentDao {
 
-    AccountBalance payRent(int rentPayment, int userId);
+    AccountBalance payRent(Payment payment);
 
     Payment getPaymentById(int paymentId);
 
@@ -17,18 +18,14 @@ public interface PaymentDao {
 
     List<Payment> viewAllRent(LocalDate startDate, LocalDate endDate);
 
-    void updatePayment(Payment payment);
+    boolean updateRentalProperty(Property updatedProperty);
 
-    void deletePayment(int paymentId);
+    boolean deletePayment(Payment payment);
 
-    public int createPayment(Payment payment);
 
     AccountBalance viewRentBill(int userId);
 
-    public AccountBalance getAccountBalance(int userId);
+    AccountBalance getAccountBalance(int userId);
 
 
-    }
-
-
-
+}

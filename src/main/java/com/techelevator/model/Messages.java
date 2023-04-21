@@ -2,13 +2,26 @@ package com.techelevator.model;
 
 import java.time.LocalDateTime;
 
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 public class Messages {
     private int messageId;
-    private int landlordUserId;
+
+    @NotNull(message = "Landlord user ID is required.")
+    private Integer landlordUserId;
+
+    @NotBlank(message = "Sender email is required.")
+    @Email(message = "Sender email must be a valid email address.")
     private String senderEmail;
+
+    @NotBlank(message = "Subject is required.")
     private String subject;
+
+    @NotBlank(message = "Message text is required.")
     private String messageText;
+
+    @NotNull(message = "Sent date is required.")
     private LocalDateTime sentAt;
 
     public Messages(int messageId, int landlordUserId, String senderEmail, String subject, String messageText, LocalDateTime sentAt) {

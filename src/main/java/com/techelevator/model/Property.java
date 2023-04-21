@@ -1,28 +1,43 @@
 package com.techelevator.model;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.time.LocalDate;
 
 public class Property {
 
     private int id;
-    private int rentalPrice;
+    @NotNull(message = "Rental price is required.")
+    @Positive(message = "Rental price must be positive.")
+    private Integer rentalPrice;
+
+    @NotBlank(message = "Address is required.")
     private String address;
-    private boolean isAvailable;
-    private int landlordId;
-    // TODO below should be changed to local date
-    private LocalDateTime dueDate;
+
+    @NotNull(message = "Availability status is required.")
+    private Boolean available;
+
+    @NotNull(message = "Landlord ID is required.")
+    private Integer landlordId;
+
+    @NotNull(message = "Due date is required.")
+    private LocalDate dueDate;
+
     public Property() {
     }
-    public Property(int id, int rentalPrice, String address, boolean isAvailable, int landlordId, LocalDateTime dueDate) {
+
+    public Property(int id, int rentalPrice, String address, boolean available, int landlordId, LocalDate dueDate) {
         this.id = id;
         this.rentalPrice = rentalPrice;
         this.address = address;
-        this.isAvailable = isAvailable;
+        this.available = available;
         this.landlordId = landlordId;
         this.dueDate = dueDate;
     }
-
-
 
     public int getId() {
         return id;
@@ -32,11 +47,11 @@ public class Property {
         this.id = id;
     }
 
-    public int getRentalPrice() {
+    public Integer getRentalPrice() {
         return rentalPrice;
     }
 
-    public void setRentalPrice(int rentalPrice) {
+    public void setRentalPrice(Integer rentalPrice) {
         this.rentalPrice = rentalPrice;
     }
 
@@ -48,27 +63,27 @@ public class Property {
         this.address = address;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
+    public Boolean getAvailable() {
+        return available;
     }
 
-    public void setAvailable(boolean available) {
-        isAvailable = available;
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
-    public int getLandlordId() {
+    public Integer getLandlordId() {
         return landlordId;
     }
 
-    public void setLandlordId(int landlordId) {
+    public void setLandlordId(Integer landlordId) {
         this.landlordId = landlordId;
     }
 
-    public LocalDateTime getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 }

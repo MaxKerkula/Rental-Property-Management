@@ -1,8 +1,12 @@
 package com.techelevator.controller;
 
-import javax.validation.Valid;
-
-import com.techelevator.model.*;
+import com.techelevator.dao.UserDao;
+import com.techelevator.model.LoginDto;
+import com.techelevator.model.LoginResponseDto;
+import com.techelevator.model.RegisterUserDto;
+import com.techelevator.model.Users;
+import com.techelevator.security.jwt.JWTFilter;
+import com.techelevator.security.jwt.TokenProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.techelevator.dao.UserDao;
-import com.techelevator.security.jwt.JWTFilter;
-import com.techelevator.security.jwt.TokenProvider;
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
@@ -24,7 +26,7 @@ public class AuthenticationController {
 
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private UserDao userDao;
+    private final UserDao userDao;
 
     public AuthenticationController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder, UserDao userDao) {
         this.tokenProvider = tokenProvider;
@@ -56,7 +58,7 @@ public class AuthenticationController {
             Users user = userDao.findByUsername(newUser.getUsername());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Already Exists.");
         } catch (UsernameNotFoundException e) {
-            userDao.create(newUser.getUsername().toLowerCase(),newUser.getPassword(), newUser.getRole());
+            userDao.create(newUser.getUsername().toLowerCase(), newUser.getPassword(), newUser.getRole());
         }
     }
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class JdbcMessageDao implements MessageDao {
@@ -71,7 +72,7 @@ public class JdbcMessageDao implements MessageDao {
         message.setSenderEmail(rowSet.getString("sender_email"));
         message.setSubject(rowSet.getString("subject"));
         message.setMessageText(rowSet.getString("message_text"));
-        message.setSentAt(rowSet.getTimestamp("sent_at").toLocalDateTime());
+        message.setSentAt(Objects.requireNonNull(rowSet.getTimestamp("sent_at")).toLocalDateTime());
         return message;
     }
 }
