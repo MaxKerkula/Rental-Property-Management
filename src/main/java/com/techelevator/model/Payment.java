@@ -2,20 +2,12 @@ package com.techelevator.model;
 
 import java.time.LocalDate;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 public class Payment {
     private int paymentId;
-    @NotNull(message = "Payment date is required.")
     private LocalDate paymentDate;
-
-    @NotNull(message = "Payment amount is required.")
-    @Positive(message = "Payment amount must be positive.")
-    private Integer paymentAmount;
-
-    @NotNull(message = "User ID is required.")
-    private Integer userId;
+    private int paymentAmount;
+    private int userId;
 
     public Payment() {
     }

@@ -5,12 +5,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class JdbcPropertyDao implements PropertyDao {
-    private final JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public JdbcPropertyDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -29,11 +30,10 @@ public class JdbcPropertyDao implements PropertyDao {
 
         return properties;
     }
-
     @Override
     public List<Property> findAllAvailableProperties() {
         List<Property> listedProperties = new ArrayList<>();
-        String sql = "SELECT * FROM property WHERE available = true;";
+        String sql = "SELECT * FROM property WHERE is_available = true;";
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         while (results.next()) {
@@ -45,36 +45,33 @@ public class JdbcPropertyDao implements PropertyDao {
     @Override
     public Property getPropertyById(int propertyId) {
         Property property = null;
-        String sql = "SELECT property_id, rental_price, address, available,landlord_id, due_date FROM property WHERE property_id = ?;";
+        String sql = "SELECT property_id, rental_price, address, is_available,landlord_id, due_date FROM property WHERE property_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, propertyId);
         if (results.next()) {
             property = (mapRowToProperty(results));
         }
         return property;
     }
-
     @Override
     public Property createProperty(Property property) {
         Property newProperty = null;
-        String sql = "INSERT INTO property (rental_price, address, available, landlord_id, due_date) " +
+        String sql = "INSERT INTO property (rental_price, address, is_available, landlord_id, due_date) " +
                 "VALUES (?, ?, ?, ?, ?) RETURNING property_id;";
         int propertyId =
                 jdbcTemplate.queryForObject(sql, Integer.class, property.getRentalPrice(),
-                        property.getAddress(), property.getAvailable(), property.getLandlordId(), property.getDueDate());
+                        property.getAddress(), property.isAvailable(), property.getLandlordId(), property.getDueDate());
 
         return property;
 
     }
 
     @Override
-    public boolean updateProperty(int propertyId, Property property) {
-        property.setId(propertyId); // Add this line to set the property object's ID to the path variable
-        String sql = "UPDATE property SET rental_price = ?, address = ?, available = ?, landlord_id  = ?, due_date  = ?" +
+    public boolean updateProperty(Property property) {
+        String sql = "UPDATE property SET rental_price = ?, address = ?, is_available = ?, landlord_id  = ?, due_date  = ?" +
                 "WHERE property_id = ?;";
         return jdbcTemplate.update(sql, property.getRentalPrice(),
-                property.getAddress(), property.getAvailable(), property.getLandlordId(), property.getDueDate(), property.getId()) == 1;
+                property.getAddress(), property.isAvailable(), property.getLandlordId(), property.getDueDate()) == 1;
     }
-
 
     @Override
     public void deleteProperty(int propertyId) {
@@ -86,12 +83,8 @@ public class JdbcPropertyDao implements PropertyDao {
         Property property = new Property();
         property.setId(results.getInt("property_id"));
         property.setRentalPrice(results.getInt("rental_price"));
-        property.setAvailable(results.getBoolean("available"));
-        property.setAddress(results.getString("address"));
-        property.setLandlordId(results.getInt("landlord_id"));
-        if (results.getDate("due_date") != null) {
-        property.setDueDate(results.getDate("dueDate").toLocalDate());
-        }
+        property.setAvailable(results.getBoolean("is_available"));
+        property.setAddress(results.getString("rental_address"));
         return property;
     }
 }

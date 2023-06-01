@@ -1,8 +1,7 @@
 package com.techelevator.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 /*
     The acronym DTO is being used for "data transfer object". It means that this type of class is specifically
     created to transfer data between the client and the server. For example, CredentialsDto represents the data a client must
@@ -11,11 +10,9 @@ import javax.validation.constraints.NotNull;
  */
 public class LoginResponseDto {
 
-    @NotBlank(message = "hacker no hacking")
     private String token;
-
-    @NotNull(message = "User object is required.")
     private Users users;
+
     public LoginResponseDto(String token, Users users) {
         this.token = token;
         this.users = users;

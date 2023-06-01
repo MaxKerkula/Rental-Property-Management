@@ -3,8 +3,6 @@ package com.techelevator.controller;
 import com.techelevator.model.Messages;
 import com.techelevator.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,30 +22,28 @@ public class MessageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Messages> getMessageById(@PathVariable int id) {
-        Messages message = messageService.getMessageById(id);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+    public Messages getMessageById(@PathVariable int id) {
+        return messageService.getMessageById(id);
     }
+
     @GetMapping("")
-    public ResponseEntity<List<Messages>> getAllMessages() {
-        List<Messages> messages = messageService.getAllMessages();
-        return new ResponseEntity<>(messages, HttpStatus.OK);
+    public List<Messages> getAllMessages() {
+        return messageService.getAllMessages();
     }
+
     @PostMapping("")
-    public ResponseEntity<Messages> createMessage(@RequestBody Messages message) {
-        Messages createdMessage = messageService.createMessage(message);
-        return new ResponseEntity<>(createdMessage, HttpStatus.CREATED);
+    public Messages createMessage(@RequestBody Messages message) {
+        return messageService.createMessage(message);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<Messages> updateMessage(@PathVariable int id, @RequestBody Messages message) {
+    public Messages updateMessage(@PathVariable int id, @RequestBody Messages message) {
         message.setMessageId(id);
-        Messages updatedMessage = messageService.updateMessage(message);
-        return new ResponseEntity<>(updatedMessage, HttpStatus.OK);
+        return messageService.updateMessage(message);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteMessage(@PathVariable int id) {
-        boolean deleted = messageService.deleteMessage(id);
-        return new ResponseEntity<>(deleted, HttpStatus.OK);
+    public boolean deleteMessage(@PathVariable int id) {
+        return messageService.deleteMessage(id);
     }
 }

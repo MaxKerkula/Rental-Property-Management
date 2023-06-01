@@ -9,17 +9,11 @@ import java.util.Set;
 public class Users {
 
     private int id;
-
     private String username;
-
-    private String password_hash;
-
     @JsonIgnore
     private String password;
-
     @JsonIgnore
     private boolean activated;
-
     private Set<Authority> authorities = new HashSet<>();
 
     public Users() {

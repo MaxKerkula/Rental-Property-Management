@@ -1,16 +1,8 @@
 package com.techelevator.model;
-import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 public class PropertyPhoto {
     private int photoId;
-
-    @NotNull(message = "Property ID is required.")
-    private Integer propertyId;
-
-    @NotBlank(message = "Photo URL is required.")
-    @URL(message = "Invalid URL format.")
+    private int propertyId;
     private String photoUrl;
 
     public PropertyPhoto(int photoId, int propertyId, String photoUrl) {

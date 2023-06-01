@@ -8,7 +8,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
+import org.springframework.security.core.GrantedAuthority;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

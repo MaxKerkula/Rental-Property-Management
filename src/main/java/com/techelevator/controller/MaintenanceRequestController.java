@@ -1,9 +1,6 @@
 package com.techelevator.controller;
-
 import com.techelevator.model.MaintenanceRequest;
 import com.techelevator.service.MaintenanceRequestService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,42 +21,40 @@ public class MaintenanceRequestController {
 
     }
 
-    public ResponseEntity<List<MaintenanceRequest>> getCurrentUserRequests(Principal principal) {
-        List<MaintenanceRequest> requests = maintenanceRequestService.getCurrentUserRequests(principal);
-        return new ResponseEntity<>(requests, HttpStatus.OK);
+    public List<MaintenanceRequest> getCurrentUserRequests(Principal principal){
+        return maintenanceRequestService.getCurrentUserRequests(principal);
     }
-
     @GetMapping("")
-    public ResponseEntity<List<MaintenanceRequest>> getAllRequests() {
-        List<MaintenanceRequest> requests = maintenanceRequestService.getAllRequests();
-        return new ResponseEntity<>(requests, HttpStatus.OK);
+    public List<MaintenanceRequest> getAllRequests() {
+        return maintenanceRequestService.getAllRequests();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MaintenanceRequest> getRequestById(@PathVariable int id) {
-        MaintenanceRequest request = maintenanceRequestService.getRequestById(id);
-        return new ResponseEntity<>(request, HttpStatus.OK);
+    public MaintenanceRequest getRequestById(@PathVariable int id) {
+        return maintenanceRequestService.getRequestById(id);
     }
-
-    public List<MaintenanceRequest> getAllRequestsById(int id) {
+    public List<MaintenanceRequest> getAllRequestsById(int id){
         return maintenanceRequestService.getAllRequestsById(id);
     }
-
     @PostMapping("")
-    public ResponseEntity<MaintenanceRequest> createRequest(@Valid @RequestBody MaintenanceRequest newRequest) {
-        MaintenanceRequest createdRequest = maintenanceRequestService.createRequest(newRequest);
-        return new ResponseEntity<>(createdRequest, HttpStatus.CREATED);
+    public MaintenanceRequest createRequest(@Valid @RequestBody MaintenanceRequest newRequest) {
+        return maintenanceRequestService.createRequest(newRequest);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Boolean> updateRequest(@PathVariable int id, @Valid @RequestBody MaintenanceRequest updatedRequest, Principal principal) {
-        boolean updated = maintenanceRequestService.updateRequest(id, updatedRequest, principal);
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+    public boolean updateRequest(@PathVariable int id, @Valid @RequestBody MaintenanceRequest updatedRequest, Principal principal) {
+        return maintenanceRequestService.updateRequest(id, updatedRequest, principal);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteRequest(@PathVariable int id) {
+    public void deleteRequest(@PathVariable int id) {
         maintenanceRequestService.deleteRequest(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
+
+//      Required Methods for MVP and Stretch, Complete Business Logic in Service:
+//      GET /maintenanceRequest/ get all maintenanceRequest requests
+//      GET /maintenanceRequest/{id}:get a maintenanceRequest request by ID
+//      POST /maintenanceRequest/:create a maintenanceRequest request
+//      PUT /maintenanceRequest/{id}: update a maintenanceRequest request
+//      DELETE /maintenanceRequest/{id}: delete a maintenanceRequest request

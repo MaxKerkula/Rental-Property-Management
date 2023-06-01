@@ -23,8 +23,10 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider implements InitializingBean {
 
-    private static final String AUTHORITIES_KEY = "auth";
     private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
+
+    private static final String AUTHORITIES_KEY = "auth";
+
     private final String base64Secret;
     private final long tokenValidityInMilliseconds;
     private final long tokenValidityInMillisecondsForRememberMe;

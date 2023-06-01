@@ -1,7 +1,7 @@
 package com.techelevator.model.zillowmodel;
 
 public class Result {
-    //TODO: @validations
+
     private Double bathrooms;
     private Double bedrooms;
     private String city;

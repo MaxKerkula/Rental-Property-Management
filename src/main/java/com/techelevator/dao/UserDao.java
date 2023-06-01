@@ -2,6 +2,7 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Users;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserDao {
@@ -18,7 +19,7 @@ public interface UserDao {
 
     String getUserRoleByID(int ID);
 
-    boolean updateUser(int id, Users user);
+    public boolean updateUser(int id, Users user);
 
     void deleteUser(int id);
 }

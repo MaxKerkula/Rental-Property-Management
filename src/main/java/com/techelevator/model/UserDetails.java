@@ -1,35 +1,17 @@
 package com.techelevator.model;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 public class UserDetails {
     private int tenantId;
-    @NotNull(message = "User ID is required.")
-    private Integer userId;
-
-    @NotNull(message = "Property ID is required.")
-    private Integer propertyId;
-
-    @NotBlank(message = "First name is required.")
+    private int userId;
+    private int propertyId;
     private String firstName;
-
-    @NotBlank(message = "Last name is required.")
     private String lastName;
-
-    @NotBlank(message = "Email is required.")
-    @Email(message = "Invalid email format.")
     private String email;
-
-    @Pattern(regexp = "^\\d{10}$", message = "Invalid phone number.")
     private String phone;
+    private Boolean hasPets;
 
-    private boolean hasPets;
     public UserDetails() {
     }
-
 
     public UserDetails(int tenantId, int userId, int propertyId, String firstName, String lastName, String email, String phone, Boolean hasPets) {
         this.tenantId = tenantId;

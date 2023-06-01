@@ -10,16 +10,13 @@ import javax.validation.constraints.NotEmpty;
  */
 public class RegisterUserDto {
 
-    @NotEmpty(message = "Username is required.")
+    @NotEmpty
     private String username;
-
-    @NotEmpty(message = "Password is required.")
+    @NotEmpty
     private String password;
-
-    @NotEmpty(message = "Please confirm your password.")
+    @NotEmpty
     private String confirmPassword;
-
-    @NotEmpty(message = "User role is required.")
+    @NotEmpty(message = "Please select a role for this user.")
     private String role;
 
     public String getUsername() {
