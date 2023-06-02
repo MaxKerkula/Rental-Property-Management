@@ -1,101 +1,35 @@
-# Capstone Starter Project
+Title of the project: Property Management Application
 
-## Database
+Brief Description of Problem: The task was to develop a real estate application that allows renters, landlords, and maintenance staff to manage rental properties and service requests. The system needed to handle user registration, authentication, property listing, rent payment, and maintenance requests.
 
-Inside the `<project-root>/database/` directory, you'll find an executable Bash script (`.sh` file) and several SQL scripts (`.sql` files). These can be used to build and rebuild a PostgreSQL database for the capstone project.
+Solution: I developed a Java-based web application for managing rental properties. The application allows anonymous users to view available rental properties and send messages to landlords. Registered users can log in as a renter, landlord, or maintenance worker. Renters can view when their rent is due, submit maintenance requests, and pay rent. Landlords can view the status of their properties, add new property listings, assign users to properties, and assign maintenance requests to employees. They can also upload pictures of a rental property, see when rent is due for all their properties, list an available property, assign a registered renter to a property, and remove a property from the public listing. Maintenance workers can view maintenance requests assigned to them and mark a request as completed. The application also supports admin users who can view and edit renter, landlord, and maintenance worker data.
 
-From a terminal session, execute the following commands:
+Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including user registration, authentication, property listing, rent payment, and maintenance request handling.
 
-```
-cd <project-root>/database/
-./create.sh
-```
+Tools / Languages Used: Java, Spring, Web API, DAO, MVC, DI, OOP, Vue, SPA, PostgreSQL, JUnit, IntelliJ, Postman, PgAdmin, Visual Studio Code
 
-This Bash script drops the existing database, if necessary, creates a new database named `final_capstone`, and runs the various SQL scripts in the correct order. You don't need to modify the Bash script unless you want to change the database name.
+Relevant Links: GitHub Repository
 
-Each SQL script has a specific purpose as described here:
+Title of the project: TEnmo (Venmo-like money transfer application)
 
-| File Name | Description |
-| --------- | ----------- |
-| `data.sql` | This script populates the database with any static setup data or test/demo data. The project team should modify this script. |
-| `dropdb.sql` | This script destroys the database so that it can be recreated. It drops the database and associated users. The project team shouldn't have to modify this script. |
-| `schema.sql` | This script creates all of the database objects, such as tables and sequences. The project team should modify this script. |
-| `users.sql` | This script creates the database application users and grants them the appropriate privileges. The project team shouldn't have to modify this script. <br /> See the next section for more information on these users. |
+Brief Description of Problem: The task was to develop a Java-based web API for a Venmo-like money transfer application. The system needed to handle user registration, authentication, account balance viewing, money transfer, and transfer history viewing.
 
-### Database users
+Solution: I developed a Java-based web API that allows users to register, log in, view their account balance, send money to other registered users, and view their transfer history. The application ensures that users can't send more money than they have in their account and can't send money to themselves. The application also logs all transactions to prevent theft.
 
-The database superuser—meaning `postgres`—must only be used for database administration. It must not be used by applications. As such, two database users are created for the capstone application to use as described here:
+Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including user registration, authentication, account balance viewing, money transfer, and transfer history viewing.
 
-| Username | Description |
-| -------- | ----------- |
-| `final_capstone_owner` | This users is the schema owner. It has full access—meaning granted all privileges—to all database objects within the `capstone` schema and also has privileges to create new schema objects. This users can be used to connect to the database from PGAdmin for administrative purposes. |
-| `final_capstone_appuser` | The application uses this users to make connections to the database. This users is granted `SELECT`, `INSERT`, `UPDATE`, and `DELETE` privileges for all database tables and can `SELECT` from all sequences. The application datasource has been configured to connect using this users. |
+Tools / Languages Used: Java, Spring, Web API, DAO, MVC, DI, JUnit, Spring, OOP, PostgreSQL, IntelliJ, PostgreSQL, Postman, PgAdmin
 
+Relevant Links: GitHub Repository
 
-## Spring Boot
-Note: Spring Boot has been configured to run on port `9000` for this project. You might be used to port `8080` from earlier in the cohort, but it's changed so as not to conflict with the Vue server that you'll be running concurrently.
+Title of the project: Vending Machine
 
-### Datasource
+Brief Description of Problem: The task was to develop a Java-based vending machine CLI program. The system needed to handle product listing, product selection, money feeding, and transaction logging.
 
-A Datasource has been configured for you in `/src/resources/application.properties`. It connects to the database using the `capstone_appuser` database users. You can change the name of this database if you want, but remember to change it here and in the `create.sh` script in the database folder:
+Solution: I developed a Java-based CLI program that simulates a vending machine. The application allows users to view available products, feed money into the machine, select a product to purchase, and receive change. The application ensures that users can't purchase a product if they don't have enough money and can't purchase a product that is sold out. The application also logs all transactions to prevent theft.
 
-```
-# datasource connection properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/final_capstone
-spring.datasource.name=final_capstone
-spring.datasource.username=final_capstone_appuser
-spring.datasource.password=finalcapstone
-```
+Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including product listing, money feeding, product selection, and transaction logging.
 
-### JdbcTemplate
+**Tools / Languages Used: Java, OOP, File I/O, JUnit, IntelliJ
 
-If you look in `/src/main/java/com/techelevator/dao`, you'll see `JdbcUserDao`. This is an example of how to get an instance of `JdbcTemplate` in your DAOs. If you declare a field of type `JdbcTemplate` and add it as an argument to the constructor, Spring automatically injects an instance for you:
-
-```java
-@Service
-public class JdbcUserDao implements UserDao {
-
-    private JdbcTemplate jdbcTemplate;
-
-    public JdbcUserDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-}
-```
-
-### CORS
-
-Any controller that'll be accessed from a client like the Vue Starter application needs the `@CrossOrigin` annotation. This
-tells the browser that you're allowing the client application to access this resource:
-
-```java
-@RestController
-@CrossOrigin
-public class AuthenticationController {
-    // ...
-}
-```
-
-## Security
-
-Most of the functionality related to Security is located in the `/src/main/java/com/techelevator/security` package. You shouldn't have to modify anything here, but feel free to go through the code if you want to see how things work.
-
-### Authentication Controller
-
-There is a single controller in the `com.techelevator.controller` package called `AuthenticationController.java`.
-
-This controller contains the `/login` and `/register` routes and works with the Vue starter as is. If you need to modify the users registration form, start here.
-
-The authentication controller uses the `JdbcUserDao` to read and write data from the users table.
-
-
-## Testing
-
-
-### DAO integration tests
-
-`com.techelevator.dao.BaseDaoTests` has been provided for you to use as a base class for any DAO integration test. It initializes a Datasource for testing and manages rollback of database changes between tests.
-
-`com.techelevator.dao.JdbUserDaoTests` has been provided for you as an example for writing your own DAO integration tests.
-
-Remember that when testing, you're using a copy of the real database. The schema for the test database is defined in the same schema script for the real database, `database/schema.sql`. The data for the test database is defined separately within `/src/test/resources/test-data.sql`.
+Relevant Links: GitHub Repository
