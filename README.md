@@ -1,34 +1,37 @@
-# Money Transfer App
+# Property Management Application
 
-This app allows users to transfer money between accounts.
+## Table of Contents
+1. [General Info](#general-info)
+2. [Technologies](#technologies)
+3. [Installation](#installation)
+4. [Features](#features)
 
-## Features
-
-- Create an account 
-- View account balance
-- Transfer money to other accounts
-- View transaction history
+## General Info
+This is a Java-based web application designed to manage rental properties. It allows renters, landlords, and maintenance staff to interact and manage their responsibilities effectively.
 
 ## Technologies
+The project is created with:
+* Java
+* Spring
+* Web API
+* DAO
+* MVC
+* DI
+* OOP
+* Vue
+* SPA
+* PostgreSQL
+* JUnit
+* IntelliJ
+* Postman
+* PgAdmin
+* Visual Studio Code
 
-- Python
-- Flask 
-- SQLite
-- HTML/CSS
+## Installation
+To run this project, clone the repository and run it on your local machine.
 
-## Setup
-
-1. Clone the repo
-2. Create a virtual environment: `python -m venv venv`
-3. Activate the virtual environment: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux)
-4. Install dependencies: `pip install -r requirements.txt`
-5. Run the app: `python app.py`
-6. Visit `http://localhost:5000` to view the app
-
-## Usage
-
-1. Create an account by entering a username, password, and initial deposit amount
-2. Log in with your username and password
-3. View your account balance and transaction history
-4. Transfer money to another account by entering the recipient's username and amount
-5. Log out when done
+## Features
+* User Registration and Authentication: Users can register as a renter, landlord, or maintenance worker and log in to the system.
+* Property Listing: Landlords can list available properties, upload pictures, and assign registered renters to a property.
+* Rent Payment: Renters can view when their rent is due and pay rent through the system.
+* Maintenance Requests: Renters can submit maintenance requests, which landlords can assign to maintenance workers.
