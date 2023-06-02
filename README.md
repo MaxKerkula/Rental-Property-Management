@@ -1,35 +1,34 @@
-Title of the project: Property Management Application
+# Money Transfer App
 
-Brief Description of Problem: The task was to develop a real estate application that allows renters, landlords, and maintenance staff to manage rental properties and service requests. The system needed to handle user registration, authentication, property listing, rent payment, and maintenance requests.
+This app allows users to transfer money between accounts.
 
-Solution: I developed a Java-based web application for managing rental properties. The application allows anonymous users to view available rental properties and send messages to landlords. Registered users can log in as a renter, landlord, or maintenance worker. Renters can view when their rent is due, submit maintenance requests, and pay rent. Landlords can view the status of their properties, add new property listings, assign users to properties, and assign maintenance requests to employees. They can also upload pictures of a rental property, see when rent is due for all their properties, list an available property, assign a registered renter to a property, and remove a property from the public listing. Maintenance workers can view maintenance requests assigned to them and mark a request as completed. The application also supports admin users who can view and edit renter, landlord, and maintenance worker data.
+## Features
 
-Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including user registration, authentication, property listing, rent payment, and maintenance request handling.
+- Create an account 
+- View account balance
+- Transfer money to other accounts
+- View transaction history
 
-Tools / Languages Used: Java, Spring, Web API, DAO, MVC, DI, OOP, Vue, SPA, PostgreSQL, JUnit, IntelliJ, Postman, PgAdmin, Visual Studio Code
+## Technologies
 
-Relevant Links: GitHub Repository
+- Python
+- Flask 
+- SQLite
+- HTML/CSS
 
-Title of the project: TEnmo (Venmo-like money transfer application)
+## Setup
 
-Brief Description of Problem: The task was to develop a Java-based web API for a Venmo-like money transfer application. The system needed to handle user registration, authentication, account balance viewing, money transfer, and transfer history viewing.
+1. Clone the repo
+2. Create a virtual environment: `python -m venv venv`
+3. Activate the virtual environment: `venv\Scripts\activate` (Windows) or `source venv/bin/activate` (Mac/Linux)
+4. Install dependencies: `pip install -r requirements.txt`
+5. Run the app: `python app.py`
+6. Visit `http://localhost:5000` to view the app
 
-Solution: I developed a Java-based web API that allows users to register, log in, view their account balance, send money to other registered users, and view their transfer history. The application ensures that users can't send more money than they have in their account and can't send money to themselves. The application also logs all transactions to prevent theft.
+## Usage
 
-Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including user registration, authentication, account balance viewing, money transfer, and transfer history viewing.
-
-Tools / Languages Used: Java, Spring, Web API, DAO, MVC, DI, JUnit, Spring, OOP, PostgreSQL, IntelliJ, PostgreSQL, Postman, PgAdmin
-
-Relevant Links: GitHub Repository
-
-Title of the project: Vending Machine
-
-Brief Description of Problem: The task was to develop a Java-based vending machine CLI program. The system needed to handle product listing, product selection, money feeding, and transaction logging.
-
-Solution: I developed a Java-based CLI program that simulates a vending machine. The application allows users to view available products, feed money into the machine, select a product to purchase, and receive change. The application ensures that users can't purchase a product if they don't have enough money and can't purchase a product that is sold out. The application also logs all transactions to prevent theft.
-
-Role: As the sole developer of this project, I was responsible for designing and implementing all aspects of the application, including product listing, money feeding, product selection, and transaction logging.
-
-**Tools / Languages Used: Java, OOP, File I/O, JUnit, IntelliJ
-
-Relevant Links: GitHub Repository
+1. Create an account by entering a username, password, and initial deposit amount
+2. Log in with your username and password
+3. View your account balance and transaction history
+4. Transfer money to another account by entering the recipient's username and amount
+5. Log out when done
